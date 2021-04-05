@@ -2,6 +2,7 @@
 using Domain.Repositories;
 using Shared.Handlers;
 using Shared.Queries;
+using System;
 
 namespace Domain.Handlers.Queries.Comentario
 {
@@ -16,11 +17,18 @@ namespace Domain.Handlers.Queries.Comentario
 
         public IQueryResult Handle(ListarMaisCaracteresQuery query)
         {
-            var comentario = Repositorio.Buscar(query.IdComentario);
+            try
+            {
+                var comentario = Repositorio.Buscar(query.IdComentario);
 
-            var texto = comentario.Texto.Substring(query.De, (comentario.Texto.Length - query.De) > 50 ? 50 : comentario.Texto.Length - query.De);
+                var texto = comentario.Texto.Substring(query.De, (comentario.Texto.Length - query.De) > 50 ? 50 : comentario.Texto.Length - query.De);
 
-            return new GenericQueryResult(true, null, texto);
+                return new GenericQueryResult(200, "Mais caracteres!", texto);
+            }
+            catch (Exception ex)
+            {
+                return new GenericQueryResult(500, ex.Message, ex);
+            }
         }
     }
 }

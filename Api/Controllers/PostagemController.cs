@@ -11,19 +11,37 @@ namespace Api.Controllers
     public class PostagemController : ControllerBase
     {
         [HttpGet("page={page}")]
-        public IQueryResult Get([FromServices] ListarQueryHandler handler, int page, string palavrasChave = null)
+        public IActionResult Get([FromServices] ListarQueryHandler handler, int page, string palavrasChave = null)
         {
             var query = new ListarQuery(page);
             if (palavrasChave != null)
                 query.PalavrasChave = palavrasChave;
-            return handler.Handle(query);
+
+            var result = (GenericQueryResult) handler.Handle(query);
+
+            return result.StatusCode switch
+            {
+                200 => Ok(result),
+                404 => NotFound(result),
+                500 => StatusCode(500, result),
+                _ => null
+            };
         }
 
         [HttpGet("idPostagem={idPostagem}&de={de}")]
-        public IQueryResult Get([FromServices] ListarComentariosQueryHandler handler, int de, Guid idPostagem)
+        public IActionResult Get([FromServices] ListarComentariosQueryHandler handler, int de, Guid idPostagem)
         {
             var query = new ListarComentariosQuery(de, idPostagem);
-            return handler.Handle(query);
+
+            var result = (GenericQueryResult) handler.Handle(query);
+
+            return result.StatusCode switch
+            {
+                200 => Ok(result),
+                404 => NotFound(result),
+                500 => StatusCode(500, result),
+                _ => null
+            };
         }
     }
 }

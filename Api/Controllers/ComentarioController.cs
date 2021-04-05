@@ -11,11 +11,19 @@ namespace Api.Controllers
     public class ComentarioController : ControllerBase
     {
         [HttpGet("idComentario={idComentario}&de={de}")]
-        public IQueryResult Get(Guid idComentario, int de, [FromServices] ListarMaisCaracteresQueryHandler handler)
+        public IActionResult Get(Guid idComentario, int de, [FromServices] ListarMaisCaracteresQueryHandler handler)
         {
             var query = new ListarMaisCaracteresQuery(idComentario, de);
 
-            return handler.Handle(query);
+            var result = (GenericQueryResult)handler.Handle(query);
+
+            return result.StatusCode switch
+            {
+                200 => Ok(result),
+                404 => NotFound(result),
+                500 => StatusCode(500, result),
+                _ => null
+            };
         }
     }
 }
