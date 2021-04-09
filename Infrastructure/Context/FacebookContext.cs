@@ -7,6 +7,7 @@ namespace Infrastructure.Context
     {
         public DbSet<Postagem> Postagens { get; set; }
         public DbSet<Comentario> Comentarios { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
 
         public FacebookContext(DbContextOptions<FacebookContext> options) : base(options) { }
 

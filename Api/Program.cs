@@ -12,7 +12,7 @@ namespace Api
         public static void Main(string[] args)
         {
             timer.AutoReset = false;
-            timer.Interval = 2500;
+            timer.Interval = 86400000;
             timer.Elapsed += new ElapsedEventHandler(ExecutarTarefa);
             timer.Enabled = true;
 
