@@ -22,7 +22,10 @@ namespace Domain.Handlers.Queries.Postagem
         {
             try
             {
-                var postagens = Repositorio.Listar(query.PalavrasChave)
+                var postagens = Repositorio.Listar(query.PalavrasChave);
+
+                if (postagens.Count < 1)
+                    return new GenericQueryResult(404, "Nenhuma postagens encontrada!", null);
 
                 var result = new ListarQueryResult()
                 {
@@ -52,9 +55,6 @@ namespace Domain.Handlers.Queries.Postagem
                             })
                             .ToList()
                 };
-
-                if(postagens == null || result == null)
-                    return new GenericQueryResult(404, "Nenhuma postagens encontrada!", null);
 
                 return new GenericQueryResult(200, "Postagens!", result);
             }
