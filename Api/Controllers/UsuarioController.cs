@@ -1,4 +1,5 @@
-﻿using Infrastructure.Context;
+﻿using Domain.Entities;
+using Infrastructure.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -33,10 +34,18 @@ namespace Api.Controllers
         [Authorize(AuthenticationSchemes = "Default, Google")]
         public object Teste()
         {
+            var tokenIssuer = Request.Headers["x-custom-header"].ToString();
+            Usuario usuario;
+
+            if (tokenIssuer == "Google")
+                usuario = Contexto.Usuarios.FirstOrDefault(u => u.Email == HttpContext.User.Claims.ElementAt(9).Value.ToString());
+            else
+                usuario = Contexto.Usuarios.Find(Guid.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti).Value));
+
             return new
             {
                 Situacao = "Autorizado",
-                IdUsuario = HttpContext.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti).Value
+                Id = usuario.Id
             };
         }
 

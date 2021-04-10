@@ -49,15 +49,14 @@ namespace Api
                  })
                 .AddJwtBearer("Google", options => //Autenticação do Google -> Caso o usuário entre com o google
                 {
+                    options.Authority = "https://securetoken.google.com/facebook-api-6163f";
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = "Carongo",
+                        ValidIssuer = "https://securetoken.google.com/facebook-api-6163f",
                         ValidateAudience = true,
-                        ValidAudience = "Carongo",
+                        ValidAudience = "facebook-api-6163f",
                         ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Carongo-b71e507ae8f44b4396530166279942af"))
                     };
                 });
                 //Pode ter uma com o github também, mas acho q o site tem que estar hospedado.
