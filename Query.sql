@@ -4,7 +4,7 @@ INSERT INTO Usuarios VALUES
 
 USE facebook;
 INSERT INTO Postagens VALUES
-(NEWID(), 'Texto 19', GETDATE());
+(NEWID(), 'Texto 32', GETDATE());
 
 USE facebook;
 INSERT INTO Comentarios VALUES
